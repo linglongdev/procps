@@ -1,0 +1,47 @@
+package:
+  id: procps
+  version: 3.3.15
+  kind: lib
+
+base:
+  id: org.deepin.base
+  version: 20.5.0
+
+depends:
+- id: qtbase
+  version: 5.11.3.15
+- id: qttools
+  version: 5.11.3
+
+source:
+  kind: git
+  url: https://github.com/deepin-community/procps.git
+  version: master
+  commit: 20f9c36b20d0462ea63abcf9391c7bc8825c7b01
+  patch:
+  - fix_checks
+  - remove_strtod_tests
+  - watch_hostname_max_define
+  - disable_sched_test
+  - uptime_test
+  - ps_checks
+  - pwait_rename
+  - add-sunway-porting.patch
+build:
+  kind: manual
+  manual:
+    configure: |
+      #exec bash
+      autoreconf -ivf 
+      ./configure --prefix=${PREFIX} \
+          --disable-silent-rules \
+          --enable-watch8bit \
+          --enable-w-from \
+          --enable-skill \
+          --with-systemd \
+          --enable-libselinux \
+          --disable-pidof \
+          --disable-modern-top \
+          --libdir=${PREFIX}/lib
+      make -j6
+      make -j6 install
