@@ -32,6 +32,7 @@ build:
   manual:
     configure: |
       #exec bash
+      update-alternatives --auto automake
       autoreconf -ivf 
       ./configure --prefix=${PREFIX} \
           --disable-silent-rules \
